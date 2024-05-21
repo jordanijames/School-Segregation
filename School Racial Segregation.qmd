@@ -1,26 +1,69 @@
 ---
-title: "Private and Public School Racial Segregation"
-format: html
+title: "White Flight and School Racial Segregation"
+format: html 
 author: Jordan James
 ---
 
-## Quarto
+```{r}
+#| label: load-data
+#| echo: false
+#| output: false
 
-Quarto enables you to weave together content and executable code into a finished document. To learn more about Quarto see <https://quarto.org>.
+library(tidyverse)
+```
 
-## Running Code
 
-When you click the **Render** button a document will be generated that includes both content and the output of embedded code. You can embed code like this:
+
+## Introduction
+
+  Despite racially segregated schools being considered unconstitutional since the 
+Supreme Court decision of Brown v. Board 1954, the education system in the U.S.
+is still heavily racially segregated. White flight is a phenomena that describes
+the pattern of a large amount of white families leaving urban areas into 
+suburban areas. Typically, white families have the socioeconomic resources to be 
+able to move middle-class or upper middle-class suburban areas. White families
+also have negative expectations of Black and Hispanic schools, and decide not
+to send their children there. In other words, White families prefer to send 
+their children to white schools, to avoid the negative stereotypes that they
+believe exist in Black and Hispanic schools. With the existence of private 
+schools and the socioeconomic resources that white families have, they are able 
+to enroll their children in private schools, without necessarily needing to move 
+to a different city or neighborhood. 
+
+  This project looks at the relationship between the racial 
+segregation of private schools and public schools. The research question 
+is does the (n) amount of private schools correlate to the increase 
+in racially segregated schools by school district in the U.S.? I'm interested
+in looking at if there are less private schools for white families to access, 
+will there be less racially segregated public schools?
+
+  My unit of analysis would be school districts because they follow city lines 
+and not county lines. Cities can have multiple school districts as well, why 
+I'm not looking just at cities. The outcome or dependent variable would be 
+levels of segregation (if a population is majority-BIPOC or majority-white) 
+and the independent variable would be the number of private schools in a city. 
+
+## Methods and Data
+
+My methods and data will go here...
 
 ```{r}
 
 ```
 
-You can add options to executable code like this 
+
 
 ```{r}
 #| echo: false
 
 ```
 
-The `echo: false` option disables the printing of code (only output is displayed).
+## Analysis 
+
+My analysis of the data will go here...
+
+## Conclusion
+
+My conclusion will go here...
+
+## Refrences 
