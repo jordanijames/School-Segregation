@@ -11,3 +11,24 @@ source(here("utils","functions.R"))
 ```
 
 This quarto doc is used to organize the data.
+
+#read in datasets
+```{r}
+public_schools <- read_csv(here("data","data_raw","ELSI_csv_export_6385268754878729684376.csv"),
+                           skip = 6, n_max = 100456, na=c("–","†","‡"))
+
+private_schools <- read_csv(here("data", "data_raw", "ELSI_csv_export_6385268708394117671648.csv"), 
+                            skip = 6, n_max = 21100, na=c("–","†","‡"))
+
+```
+
+
+#renaming variables
+```{r}
+private_schools <- private_schools |>
+  rename(state = `State Name [Private School] 2019-20`,
+         school_id = `School ID - NCES Assigned [Private School] Latest available year`,
+         county_name = `County Name [Private School] 2019-20`,
+         county_code = `ANSI/FIPS County Code [Private School] 2019-20`),
+|>
+  select()
