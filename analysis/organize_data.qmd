@@ -90,3 +90,11 @@ public_2019 <- public_2019 |>
 ```
 
 
+#subset data by county
+```{r}
+private_county <- private_2019 |>
+  group_by(county_name)|>
+  summarize(number_of_private_schools = n())
+
+```
+
