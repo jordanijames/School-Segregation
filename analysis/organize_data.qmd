@@ -15,10 +15,10 @@ This quarto doc is used to organize the data.
 #read in datasets
 ```{r}
 public_schools <- read_csv(here("data","data_raw","ELSI_csv_export_6385268754878729684376.csv"),
-                           skip = 6, n_max = 100456, na=c("–","†","‡"))
+                           skip = 6, n_max = 100455, na=c("–","†","‡"))
 
 private_schools <- read_csv(here("data", "data_raw", "ELSI_csv_export_6385268708394117671648.csv"), 
-                            skip = 6, n_max = 21100, na=c("–","†","‡"))
+                            skip = 6, n_max = 21099, na=c("–","†","‡"))
 
 ```
 
@@ -70,6 +70,9 @@ private_2019 <- private_2019 |>
          Hawaiian = `Nat. Hawaiian or Other Pacific Isl. Students [Private School] 2019-20`, 
          Multiracial = `Two or More Races Students [Private School] 2019-20`) 
 
+  private_2019 <- private_2019 |>
+    mutate(county_code = as.numeric(county_code))
+
 public_2019 <- public_2019 |>
   rename(school_name = `School Name [Public School] 2019-20`, 
          state = `State Name [Public School] Latest available year`,
@@ -87,7 +90,10 @@ public_2019 <- public_2019 |>
          White = `White Students [Public School] 2019-20`, 
          Hawaiian = `Nat. Hawaiian or Other Pacific Isl. Students [Public School] 2019-20`, 
          Multiracial = `Two or More Races Students [Public School] 2019-20`)
-```
+
+public_2019 <- public_2019 |>
+    mutate(county_code = as.numeric(county_code))
+``` 
 
 
 #subset data by county
@@ -95,6 +101,11 @@ public_2019 <- public_2019 |>
 private_county <- private_2019 |>
   group_by(county_name)|>
   summarize(number_of_private_schools = n())
+
+private_county <- private_2019 |>
+  group_by(county_code) |>
+  summarize(n_private = n())
+
 
 ```
 
