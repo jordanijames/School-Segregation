@@ -22,13 +22,71 @@ private_schools <- read_csv(here("data", "data_raw", "ELSI_csv_export_6385268708
 
 ```
 
+#selecting variables
+```{r}
+private_2019 <- subset(private_schools,
+  select = c("Private School Name", "State Name [Private School] Latest available year",
+             "School ID - NCES Assigned [Private School] Latest available year", 
+             "County Name [Private School] 2019-20","ANSI/FIPS County Code [Private School] 2019-20", 
+             "ANSI/FIPS State Code [Private School] Latest available year", "Total Students (Ungraded & K-12) [Private School] 2019-20", "American Indian/Alaska Native Students [Private School] 2019-20",
+"Asian or Asian/Pacific Islander Students [Private School] 2019-20", "Hispanic Students [Private School] 2019-20", "Black or African American Students [Private School] 2019-20", "White Students [Private School] 2019-20", "Nat. Hawaiian or Other Pacific Isl. Students [Private School] 2019-20", 
+   "Two or More Races Students [Private School] 2019-20")) 
+  
+public_2019 <- subset(public_schools, 
+                      select = c("School Name [Public School] 2019-20", 
+    "State Name [Public School] Latest available year",
+        "School ID - NCES Assigned [Public School] Latest available year", 
+         "County Name [Public School] 2019-20", 
+         "County Number [Public School] 2019-20", 
+        "ANSI/FIPS State Code [Public School] Latest available year", 
+        "Charter School [Public School] 2019-20", 
+         "Magnet School [Public School] 2019-20", 
+         "Total Students All Grades (Excludes AE) [Public School] 2019-20",
+        "American Indian/Alaska Native Students [Public School] 2019-20",
+         "Asian or Asian/Pacific Islander Students [Public School] 2019-20",
+        "Hispanic Students [Public School] 2019-20", 
+      "Black or African American Students [Public School] 2019-20", 
+"White Students [Public School] 2019-20", 
+         "Nat. Hawaiian or Other Pacific Isl. Students [Public School] 2019-20", 
+         "Two or More Races Students [Public School] 2019-20"))
+  
+```
+
 
 #renaming variables
 ```{r}
-private_schools <- private_schools |>
-  rename(state = `State Name [Private School] 2019-20`,
+private_2019 <- private_2019 |>
+  rename(state = `State Name [Private School] Latest available year`,
          school_id = `School ID - NCES Assigned [Private School] Latest available year`,
          county_name = `County Name [Private School] 2019-20`,
-         county_code = `ANSI/FIPS County Code [Private School] 2019-20`),
-|>
-  select()
+         county_code = `ANSI/FIPS County Code [Private School] 2019-20`,
+         state_code = `ANSI/FIPS State Code [Private School] Latest available year`,
+         total_students = `Total Students (Ungraded & K-12) [Private School] 2019-20`,
+         AIAN = `American Indian/Alaska Native Students [Private School] 2019-20`,
+         Asian = `Asian or Asian/Pacific Islander Students [Private School] 2019-20`,
+         Hispanic = `Hispanic Students [Private School] 2019-20`, 
+         Black = `Black or African American Students [Private School] 2019-20`, 
+         White = `White Students [Private School] 2019-20`, 
+         Hawaiian = `Nat. Hawaiian or Other Pacific Isl. Students [Private School] 2019-20`, 
+         Multiracial = `Two or More Races Students [Private School] 2019-20`) 
+
+public_2019 <- public_2019 |>
+  rename(school_name = `School Name [Public School] 2019-20`, 
+         state = `State Name [Public School] Latest available year`,
+         school_id = `School ID - NCES Assigned [Public School] Latest available year`, 
+         county_name = `County Name [Public School] 2019-20`, 
+         county_code = `County Number [Public School] 2019-20`, 
+         state_code = `ANSI/FIPS State Code [Public School] Latest available year`, 
+         charter_school = `Charter School [Public School] 2019-20`, 
+         magnet_school = `Magnet School [Public School] 2019-20`, 
+         total_students = `Total Students All Grades (Excludes AE) [Public School] 2019-20`,
+         AIAN = `American Indian/Alaska Native Students [Public School] 2019-20`,
+         Asian = `Asian or Asian/Pacific Islander Students [Public School] 2019-20`,
+         Hispanic = `Hispanic Students [Public School] 2019-20`, 
+         Black = `Black or African American Students [Public School] 2019-20`, 
+         White = `White Students [Public School] 2019-20`, 
+         Hawaiian = `Nat. Hawaiian or Other Pacific Isl. Students [Public School] 2019-20`, 
+         Multiracial = `Two or More Races Students [Public School] 2019-20`)
+```
+
+
