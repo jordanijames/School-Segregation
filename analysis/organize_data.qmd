@@ -96,11 +96,9 @@ public_2019 <- public_2019 |>
 ``` 
 
 
+
 #subset data by county
 ```{r}
-private_county <- private_2019 |>
-  group_by(county_name)|>
-  summarize(number_of_private_schools = n())
 
 private_county <- private_2019 |>
   group_by(county_code) |>
@@ -110,7 +108,33 @@ public_county <- public_2019 |>
   mutate(NonWhite = AIAN+Asian+Hispanic+Black+Hawaiian+Multiracial) |>
   select(county_code, White, NonWhite) |>
   drop_na() |>
+  group_by(county_code) |>
   arrange(county_code)
+
+
+
+```
+
+
+
+#calculate dissimilarity index
+```{r}
+#tracts_multnomah <- tracts |>
+  #filter(county_name == "Multnomah County, Oregon")
+#a <- tracts_multnomah$pop_race_white/sum(tracts_multnomah$pop_race_white)
+#b <- tracts_multnomah$pop_race_black/sum(tracts_multnomah$pop_race_black)
+#50 * sum(abs(a-b))
+
+calc_dissimilarity <- function(public_county) {
+  a <- public_county$White/sum(public_county$White)
+  b <- public_county$NonWhite/sum(public_county$NonWhite)
+  return(50 * sum(abs(a-b)))
+}
+
+#tracts |>
+  #filter(county_code == "1001") |>
+  #calc_dissimilarity()
+
 
 ```
 
