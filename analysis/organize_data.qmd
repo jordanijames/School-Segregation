@@ -121,9 +121,12 @@ public_county <- public_2019 |>
 ```{r}
 
 calc_dissimilarity <- function(county) {
-  a <- public_county$White/sum(public_county$White)
-  b <- public_county$NonWhite/sum(public_county$NonWhite)
-  return(50 * sum(abs(a-b)))
+  a <- county$White/sum(county$White)
+  b <- county$NonWhite/sum(county$NonWhite)
+  dissim <- 50 * sum(abs(a-b))
+  return(tibble(county_code = unique(county$county_code),
+                dissim = dissim,
+                n_schools = nrow(county)))
 }
 
 public_county |>
@@ -133,5 +136,12 @@ public_county |>
 public_county |>
   filter(county_code == "1021") |>
   calc_dissimilarity()
+
+public_dissim <- public_county |>
+  group_by(county_code) |>
+  group_split() |>
+  map(calc_dissimilarity) |>
+  bind_rows()
+
 ```
 
