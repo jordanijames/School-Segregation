@@ -149,6 +149,11 @@ public_dissim <- public_county |>
 #merge datasets
 ```{r}
 
-school_dissim <- merge(public_dissim, private_county,by=c("county_code"))
+school_dissim <- left_join(public_dissim, private_county, by=c("county_code"))
+
+school_dissim <- school_dissim |>
+  filter(n_schools >= 10) |>
+  mutate(n_private = ifelse(is.na(n_private), 0, n_private)) |>
+  drop_na()
 ```
 
