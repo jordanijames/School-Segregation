@@ -145,3 +145,10 @@ public_dissim <- public_county |>
 
 ```
 
+
+#merge datasets
+```{r}
+
+school_dissim <- merge(public_dissim, private_county,by=c("county_code"))
+```
+
