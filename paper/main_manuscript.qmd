@@ -1,8 +1,8 @@
 ---
-title: "Paper Manuscript"
-shorttitle: "Paper"
+title: "White Flight and School Racial Segregation"
+shorttitle: "School Segregation"
 abstract: An Abstract
-keywords: [keyword1, keyword2]
+keywords: [segregation, white flight]
 thanks: Thanks to everyone for checking this out.
 reference-section-title: References
 bibliography: ../bibliography/project.bib
@@ -32,7 +32,17 @@ source(here("utils","functions.R"))
 
 # Introduction
 
-This quarto doc is for writing the manuscript. This is a test citation [@alba1990].
+Despite racially segregated schools being considered unconstitutional since the Supreme Court decision of Brown v. Board 1954, the education system in the U.S.is still heavily racially segregated. White flight is a phenomena that describes the pattern of a large amount of white families leaving urban areas into suburban areas. Typically, white families have the socioeconomic resources to be able to move middle-class or upper middle-class suburban areas. White families also have negative expectations of Black and Hispanic schools, and decide not to send their children there. In other words, White families prefer to send their children to white schools, to avoid the negative stereotypes that they
+believe exist in Black and Hispanic schools. With the existence of private schools and the socioeconomic resources that white families have, they are able to enroll their children in private schools, without necessarily needing to move to a different city or neighborhood. 
+
+  This project looks at the relationship between the racial 
+segregation of private schools and public schools. The research question 
+is does the (n) amount of private schools correlate to the increase 
+in racially segregated schools by school district in the U.S.? I'm interested in looking at if there are less private schools for white families to access, will there be less racially segregated public schools?
+
+  My unit of analysis would be school districts because they follow city lines and not county lines. Cities can have multiple school districts as well, why I'm not looking just at cities. The outcome or dependent variable would be levels of segregation (if a population is majority-BIPOC or majority-white) and the independent variable would be the number of private schools in a city. 
+
+This is a test citation [@alba1990].
 
 # Background
 

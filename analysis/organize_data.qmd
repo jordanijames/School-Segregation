@@ -157,3 +157,8 @@ school_dissim <- school_dissim |>
   drop_na()
 ```
 
+#models and graphs
+```{r}
+
+```
+
