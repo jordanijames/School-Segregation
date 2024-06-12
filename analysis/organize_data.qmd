@@ -20,6 +20,7 @@ public_schools <- read_csv(here("data","data_raw","ELSI_csv_export_6385268754878
 private_schools <- read_csv(here("data", "data_raw", "ELSI_csv_export_6385268708394117671648.csv"), 
                             skip = 6, n_max = 21099, na=c("–","†","‡"))
 
+acs_2019 <- read.csv(here("data", "data_raw", "R13685059_SL050.csv"))
 ```
 
 #selecting variables
@@ -49,7 +50,13 @@ public_2019 <- subset(public_schools,
 "White Students [Public School] 2019-20", 
          "Nat. Hawaiian or Other Pacific Isl. Students [Public School] 2019-20", 
          "Two or More Races Students [Public School] 2019-20"))
-  
+
+acs_county <- subset(acs_2019,
+                     select = c("Geo_NAME", "Geo_FIPS", "SE_A14006_001", 
+                                "SE_A12002_001", "SE_A12002_002", "SE_A12002_003",
+                                "SE_A12002_004", "SE_A12002_005", "SE_A12002_006", 
+                                "SE_A12002_007", "SE_A12002_008", "SE_A00002_001",
+                                "SE_A00002_002", "SE_A00002_003"))
 ```
 
 
@@ -93,6 +100,24 @@ public_2019 <- public_2019 |>
 
 public_2019 <- public_2019 |>
     mutate(county_code = as.numeric(county_code))
+
+acs_county <- acs_county |>
+  rename(county_name = 'Geo_NAME', 
+         county_code ='Geo_FIPS', 
+         median_household_income = 'SE_A14006_001', 
+         pop_25 = 'SE_A12002_001', 
+         less_than_HS = 'SE_A12002_002', 
+         HS = 'SE_A12002_003',
+         some_college = 'SE_A12002_004', 
+         BD = 'SE_A12002_005', 
+         MD = 'SE_A12002_006', 
+         prof_SD = 'SE_A12002_007', 
+         doctorate = 'SE_A12002_008', 
+         total_pop = 'SE_A00002_001', pop_density = 'SE_A00002_002', 
+         land_area = 'SE_A00002_003')
+
+acs_county <- acs_county |>
+  mutate(county_code = as.numeric(county_code))
 ``` 
 
 
@@ -155,7 +180,9 @@ school_dissim <- school_dissim |>
   filter(n_schools >= 10) |>
   mutate(n_private = ifelse(is.na(n_private), 0, n_private)) |>
   drop_na()
+
 ```
+
 
 #models and graphs
 ```{r}
