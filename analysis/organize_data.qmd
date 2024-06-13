@@ -20,7 +20,7 @@ public_schools <- read_csv(here("data","data_raw","ELSI_csv_export_6385268754878
 private_schools <- read_csv(here("data", "data_raw", "ELSI_csv_export_6385268708394117671648.csv"), 
                             skip = 6, n_max = 21099, na=c("–","†","‡"))
 
-acs_2019 <- read.csv(here("data", "data_raw", "R13685059_SL050.csv"))
+acs_2019 <- read_csv(here("data", "data_raw", "R13685059_SL050.csv"))
 ```
 
 #selecting variables
@@ -185,7 +185,68 @@ school_dissim <- school_dissim |>
 
 
 #models and graphs
+
+
 ```{r}
+#| label: fig-1
+#| fig-cap: Relationship Between the number of Private Schools and Public School Dissimilarity 
+
+ggplot(school_dissim, aes(x=n_private, y=dissim))+
+  geom_point()+
+  geom_smooth(method = "lm", se = FALSE)+
+  labs(x = "number of private schools", y = "public school dissimilarity", subtitle = "priavte schools and racial dissimilarity")+
+  theme_bw()
+```
+
+
+```{r}
+#| label: fig-2
+#| fig-cap: Private schools and Racial Dissimilarity - residual vs. fitted values
+
+model <- lm(dissim~n_private, data = school_dissim)
+augment(model)
+
+ggplot(augment(model), aes(x = .fitted, y = .resid))+
+  geom_point()+
+  geom_hline(yintercept = 0, linetype = 2)+
+  geom_smooth(se = FALSE)+
+  labs(x = "dissimilarity fitted values", y = "model residuals")+
+  theme_bw()
+```
+
+
+
+
+#fix the non-lineararity 
+```{r}
+#| label: fig-3
+#| fig-cap: log transformation
+
+ggplot(school_dissim, aes(x = n_private, y = dissim))+
+  geom_jitter(alpha = 0.5)+
+  geom_smooth(method = "lm", color = "red", se = FALSE)+
+  scale_x_log10()+
+  scale_y_log10()+
+  labs(x = "number of private schools", y = "public school dissimilarity")+
+  theme_bw()
+```
+
+
+```{r}
+#| label: tbl-reg
+#| tbl-cap: Relationship between number of private schools and public school racial dissimilarity by County
+#| results: asis
+
+model1 <- lm(log(dissim) ~ log(n_private), data = school_dissim)
+
+
+screenreg(list(model1),
+       digits = 3,
+       caption.above=TRUE, 
+       include.rsquared=TRUE,
+       include.adjrs=FALSE,
+       include.nobs=TRUE,
+       include.rmse=FALSE)
 
 ```
 
