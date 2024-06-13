@@ -194,8 +194,7 @@ school_dissim <- left_join(school_dissim, acs_county, by=c("county_code"))
 
 ggplot(school_dissim, aes(x=n_private, y=dissim))+
   geom_point()+
-  geom_jitter()+
-  geom_smooth(method = "lm", se = FALSE)+
+  geom_smooth(se = FALSE)+
   labs(x = "number of private schools", y = "public school dissimilarity", subtitle = "priavte schools and racial dissimilarity")+
   theme_bw()
 ```
@@ -239,7 +238,11 @@ ggplot(school_dissim, aes(x = n_private, y = dissim))+
 #| tbl-cap: Relationship between number of private schools and public school racial dissimilarity by County
 #| results: asis
 
-model1 <- lm(log(dissim) ~ log(n_private), data = school_dissim)
+model1 <- lm(dissim~n_private+median_household_income, data=school_dissim)
+ 
+model2 <- lm(dissim~n_private+median_household_income+total_pop, data=school_dissim)
+ 
+model3 <- lm(dissim~n_private+median_household_income+total_pop+pop_density, data=school_dissim)
 
 
 screenreg(list(model1),
