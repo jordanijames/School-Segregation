@@ -245,7 +245,7 @@ model2 <- lm(dissim~n_private+median_household_income+total_pop, data=school_dis
 model3 <- lm(dissim~n_private+median_household_income+total_pop+pop_density, data=school_dissim)
 
 
-screenreg(list(model1),
+screenreg(list(model1, model2, model3),
        digits = 3,
        caption.above=TRUE, 
        include.rsquared=TRUE,
