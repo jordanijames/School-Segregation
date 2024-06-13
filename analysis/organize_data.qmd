@@ -20,7 +20,7 @@ public_schools <- read_csv(here("data","data_raw","ELSI_csv_export_6385268754878
 private_schools <- read_csv(here("data", "data_raw", "ELSI_csv_export_6385268708394117671648.csv"), 
                             skip = 6, n_max = 21099, na=c("–","†","‡"))
 
-acs_2019 <- read_csv(here("data", "data_raw", "R13685059_SL050.csv"))
+acs_2019 <- read_csv(here("data", "data_raw", "R13686816_SL050.csv"))
 ```
 
 #selecting variables
@@ -181,6 +181,7 @@ school_dissim <- school_dissim |>
   mutate(n_private = ifelse(is.na(n_private), 0, n_private)) |>
   drop_na()
 
+school_dissim <- left_join(school_dissim, acs_county, by=c("county_code"))
 ```
 
 
@@ -193,6 +194,7 @@ school_dissim <- school_dissim |>
 
 ggplot(school_dissim, aes(x=n_private, y=dissim))+
   geom_point()+
+  geom_jitter()+
   geom_smooth(method = "lm", se = FALSE)+
   labs(x = "number of private schools", y = "public school dissimilarity", subtitle = "priavte schools and racial dissimilarity")+
   theme_bw()
