@@ -1,7 +1,6 @@
 ---
 title: "White Flight and School Racial Segregation"
 shorttitle: "School Segregation"
-abstract: An Abstract
 keywords: [segregation, white flight]
 thanks: Thanks to everyone for checking this out.
 reference-section-title: References
@@ -28,26 +27,149 @@ format:
 library(here)
 source(here("utils","check_packages.R"))
 source(here("utils","functions.R"))
+load(here("data", "data_constructed", "analytical_data.RData"))
+
 ```
 
-# Introduction
+# Introduction and Background
 
 Despite racially segregated schools being considered unconstitutional since the Supreme Court decision of Brown v. Board 1954, the education system in the U.S.is still heavily racially segregated. White flight is a phenomena that describes the pattern of a large amount of white families leaving urban areas into suburban areas. Typically, white families have the socioeconomic resources to be able to move middle-class or upper middle-class suburban areas. White families also have negative expectations of Black and Hispanic schools, and decide not to send their children there. In other words, White families prefer to send their children to white schools, to avoid the negative stereotypes that they
 believe exist in Black and Hispanic schools. With the existence of private schools and the socioeconomic resources that white families have, they are able to enroll their children in private schools, without necessarily needing to move to a different city or neighborhood. 
 
-  This project looks at the relationship between the racial 
+This project looks at the relationship between the racial 
 segregation of private schools and public schools. The research question 
 is does the (n) amount of private schools correlate to the increase 
 in racially segregated schools by school district in the U.S.? I'm interested in looking at if there are less private schools for white families to access, will there be less racially segregated public schools?
 
-  My unit of analysis would be school districts because they follow city lines and not county lines. Cities can have multiple school districts as well, why I'm not looking just at cities. The outcome or dependent variable would be levels of segregation (if a population is majority-BIPOC or majority-white) and the independent variable would be the number of private schools in a city. 
+My unit of analysis would be counties because private schools are not a part of school districts. The outcome or dependent variable would be levels of segregation (if a population is majority-non-white or majority-white) and the independent variable would be the number of private schools in a county. 
 
-This is a test citation [@alba1990].
 
-# Background
 
 # Data and Methods
 
+There were two data sets that I used: National Center for Education Statistics 
+(2019-2020) and American Community Surveys 5-year Estimates (ACS 2017-2021). 
+The NCES data includes information on private and public schools from the years 
+2019 to 2020 and the ACS data includes control variables on the county level 
+from the years 2017 to 2021. The variables used from the private school and 
+public schools are the county FIPS codes, the number of private schools, the 
+racial demographics of each public school, and the number of public schools. 
+The control variables used from the ACS data set were the median household income,
+the highest level of educational attainment, and the population density on the 
+county level. The independent variable is the number of private schools and the 
+dependent variable is the dissimilarity index of white students and non-white 
+students in public schools. My hypothesis was the more private schools there are 
+in a county, the higher the segregation or dissimilarity between white and 
+non-white students in public schools. 
+
+
 # Results
 
+To look at the relationship between the number of private schools and public
+school dissimilarity, I created a scatter plot which is shown in @fig-1. This 
+figure shows that this relationship is not linear and is heavily right-skewed. 
+Just looking at the first figure, there seems to be a light positive relationship
+between the number of private schools and the racial dissimilarity of public
+schools, but it's a small amount and this graph is not the best representation
+of this relationship. The second graph I created in @fig-2 shows cone-shaped 
+data with fitted-values and residuals. This means that there is an IID violation 
+and problems of heteroskedasticity. Again, there is not a strong linear 
+relationship. 
+
+To attempt to fix the IID violation I used log transformations on the 
+independent variable in @fig-3. However, using the number of private schools
+as the independent variable is not the best variable to use to capture a 
+relationship with dissimilarity. There seems to be a slightly positive 
+association, but it is still cone-shaped (heteroskedasticity) and not linear.
+Having the percentage of all schools that are private or the percentage of 
+all students who go to private schools would be better independent variables. 
+
+For the models in @tbl-reg, in model 1 there is a positive relationship
+with the n_private coefficient, which means the more private schools in a 
+county, the higher the public school dissimilarity. However, The only 
+statistically significant outcome is in model 1 and not in models 2 or 3. For 
+the control variables the relationships are positive, but very small and not
+statistically significant. As stated before, calculating a different 
+independent variable that will still capture the relationship between
+private schools and public school segregation would provide better results. 
+
+
+
 # Conclusions
+
+This project looked at racial school segregation and private schools at the 
+county level in the U.S. Survey data from NCES and ACS were used to calculate
+the relationship between the number of private schools in a county and the
+racial dissimilarity of white and non-white students in public schools. The data
+showed that there was a positive relationship between the two variables, meaning
+the more private schools in a county the higher the dissimilarity index of
+public schools. However, the independent variable (number of private schools)
+was not the best way to represent this relationship, leading to non-linear
+IID violation of heteroskedasticity. The data was heavily skewed to the right, 
+not displaying the relationship as best as it could with a different independent
+variable. Future work on this project would calculate the percentage of 
+all schools that are private and the percentage of all students who go to 
+private schools. It will also have better models with different control variables. 
+```{r}
+#| label: fig-1
+#| fig-cap: Relationship Between the number of Private Schools and Public School Dissimilarity 
+
+ggplot(school_dissim, aes(x=n_private, y=dissim))+
+  geom_point()+
+  geom_smooth(se = FALSE)+
+  labs(x = "number of private schools", y = "public school dissimilarity", subtitle = "priavte schools and racial dissimilarity")+
+  theme_bw()
+```
+
+
+```{r}
+#| label: fig-2
+#| fig-cap: Private schools and Racial Dissimilarity - residual vs. fitted values
+
+model <- lm(dissim~n_private, data = school_dissim)
+augment(model)
+
+ggplot(augment(model), aes(x = .fitted, y = .resid))+
+  geom_point()+
+  geom_hline(yintercept = 0, linetype = 2)+
+  geom_smooth(se = FALSE)+
+  labs(x = "dissimilarity fitted values", y = "model residuals")+
+  theme_bw()
+```
+
+
+
+```{r}
+#| label: fig-3
+#| fig-cap: log transformation
+
+ggplot(school_dissim, aes(x = n_private, y = dissim))+
+  geom_jitter(alpha = 0.5)+
+  geom_smooth(method = "lm", color = "red", se = FALSE)+
+  scale_x_log10()+
+  labs(x = "number of private schools", y = "public school dissimilarity")+
+  theme_bw()
+```
+
+
+```{r}
+#| label: tbl-reg
+#| tbl-cap: Relationship between number of private schools and public school racial dissimilarity by County
+#| results: asis
+
+model1 <- lm(dissim~n_private+median_household_income, data=school_dissim)
+ 
+model2 <- lm(dissim~n_private+median_household_income+total_pop, data=school_dissim)
+ 
+model3 <- lm(dissim~n_private+median_household_income+total_pop+pop_density, data=school_dissim)
+
+
+texreg(list(model1, model2, model3),
+       digits = 3,
+       caption.above=TRUE, 
+       include.rsquared=TRUE,
+       include.adjrs=FALSE,
+       include.nobs=TRUE,
+       include.rmse=FALSE)
+
+```

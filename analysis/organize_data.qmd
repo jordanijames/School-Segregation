@@ -227,7 +227,6 @@ ggplot(school_dissim, aes(x = n_private, y = dissim))+
   geom_jitter(alpha = 0.5)+
   geom_smooth(method = "lm", color = "red", se = FALSE)+
   scale_x_log10()+
-  scale_y_log10()+
   labs(x = "number of private schools", y = "public school dissimilarity")+
   theme_bw()
 ```
@@ -253,5 +252,11 @@ screenreg(list(model1, model2, model3),
        include.nobs=TRUE,
        include.rmse=FALSE)
 
+```
+
+#save data
+```{r}
+
+save(school_dissim, file=here("data", "data_constructed", "analytical_data.RData"))
 ```
 
